@@ -3,6 +3,7 @@ syntax on
 set number
 set cursorline
 set mouse=a
+set ttymouse=xterm2
 
 " Default Whitespace
 set tabstop=2
@@ -21,6 +22,8 @@ Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 call plug#end()
 
 map <C-t> :NERDTreeToggle<CR>
