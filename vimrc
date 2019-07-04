@@ -6,12 +6,15 @@ set mouse=a
 set ttymouse=xterm2
 let g:mapleader=","
 
-set hidden
 " Default Whitespace
-set tabstop=4 "tab size
-set shiftwidth=2
-set softtabstop=2
-set expandtab "пробелы вместо табуляции
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+" let leave not saved buffer
+set hidden
+set nowrap
+set linebreak
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
@@ -19,7 +22,9 @@ Plug 'kien/ctrlp.vim'
 Plug 'morhetz/gruvbox'
 Plug 'Chiel92/vim-autoformat'
 Plug 'mattn/emmet-vim'
-Plug 'mxw/vim-jsx'
+"Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'jiangmiao/auto-pairs'
 Plug 'epilande/vim-es2015-snippets'
 Plug 'epilande/vim-react-snippets'
@@ -31,6 +36,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
 "Plug 'haya14busa/incsearch-fuzzy.vim'
 "Plug 'haya14busa/incsearch-easymotion.vim'
+Plug 'chr4/nginx.vim'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -40,6 +46,12 @@ call plug#end()
 
 map <C-t> :NERDTreeToggle<CR>
 noremap <F3> :Autoformat.<CR>
+
+" insert , or ; in the end of the line
+noremap <leader>, i<C-o>A,
+noremap <leader>; i<C-o>A;
+inoremap <leader>; <C-o>A;
+inoremap <leader>, <C-o>A,
 
 " CtrlP
 let g:ctrlp_map = '<c-p>'
@@ -82,9 +94,12 @@ map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
+" Trigger configuration (Optional) Do not use <tab> if you use YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<C-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 "--------------------- EasyMotion
-
-
 " You can use other keymappings like <C-l> instead of <CR> if you want to
 " use these mappings as default search and somtimes want to move cursor with
 " EasyMotion.
@@ -124,8 +139,6 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
 nmap s <Plug>(easymotion-overwin-f2)
-
-
 
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
@@ -194,3 +207,22 @@ function! <SID>StripTrailingWhitespaces()
   %s/\s\+$//e
   call cursor(l, c)
 endfun
+
+au BufRead,BufNewFile */nginx/* set ft=nginx
+
+" The following lets you type Ngb to jump to buffer number N (a number from 1
+" to 99). For example, typing 12gb would jump to buffer 12.
+let c = 1
+while c <= 99
+    execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+    let c += 1
+endwhile
+
+" At the prompt, type the desired buffer number and hit Enter.
+nnoremap gb :ls<CR>:b<Space>
+
+" disable arrow keys
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
